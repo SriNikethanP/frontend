@@ -23,7 +23,7 @@
   "photo_description": " or Capture using front camera PNG, JPG or JPEG (max size: 1MB)",
   "select": "Select an Option",
   "congrats": "Congratulations!",
-  "uin_message": " Your Unique Identification Number (UIN) has been successfully issued:",
+  "uin_message": " Your Unique Identification Number (UIN) has been successfully issued.",
   "further_details": " Please check your email for further details.",
   "okay": "Okay",
   "err_fn": "Full Name is required",
@@ -39,5 +39,6 @@
   "err_cnst": "Please consent to proceed",
   "error": "Error",
   "SELF_ERR-001": "eMailId found as duplicate",
-  "SELF_ERR-002": "Registration failed.. try again."
+  "SELF_ERR-002": "Registration failed.. try again.",
+  "SELF_ERR-003": "Something went wrong. Please try again!"
 }

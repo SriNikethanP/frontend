@@ -50,7 +50,11 @@ const ErrorPopup = ({ setShowSuccessPopup, message }) => {
         <h2 className="text-2xl font-semibold mb-4">{t("error")}</h2>
         <p className="text-gray-600 mb-6 ">
           {/* {t("err_msg")} */}
-          {message}
+          {message === "SELF_ERR-001"
+            ? t("SELF_ERR-001")
+            : message === "SELF_ERR-002"
+            ? t("SELF_ERR-002")
+            : t("SELF_ERR-003")}
         </p>
         <button
           className="bg-rose-700 text-white px-6 py-2 rounded-lg hover:bg-rose-800 w-full"

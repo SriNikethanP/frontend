@@ -23,7 +23,7 @@
   "photo_description": " o Capturar usando la cámara frontal PNG, JPG o JPEG (tamaño máximo: 1MB)",
   "select": "Seleccionar una Opción",
   "congrats": "¡Felicidades!",
-  "uin_message": " Su Número de Identificación Único (UIN) ha sido emitido exitosamente:",
+  "uin_message": " Su Número de Identificación Único (UIN) ha sido emitido exitosamente.",
   "further_details": " Por favor, revise su correo electrónico para más detalles.",
   "okay": "Está Bien",
   "err_fn": "El Nombre Completo es obligatorio",
@@ -39,5 +39,6 @@
   "err_cnst": "Debe dar su consentimiento para continuar",
   "error": "Error",
   "SELF_ERR-001": "El correo electrónico se encuentra duplicado",
-  "SELF_ERR-002": "Error en el registro.. inténtalo de nuevo."
+  "SELF_ERR-002": "Error en el registro.. inténtalo de nuevo.",
+  "SELF_ERR-003": "Algo salió mal. ¡Por favor, inténtalo de nuevo!"
 }

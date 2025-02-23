@@ -222,7 +222,7 @@ const Register = () => {
       photo: base64Image, // Use the Base64 string here
     };
     // Send data to backend through API
-    register(userData, setStatus,t);
+    register(userData, setStatus);
   };
 
   return (
@@ -308,7 +308,6 @@ const Register = () => {
                 <div
                   className="border rounded-xl p-4 text-center flex flex-col items-center justify-center h-32 cursor-pointer"
                   style={{ width: "230px", height: "155px" }}
-                  onClick={handleUploadClick}
                 >
                   {selectedImage ? (
                     <div className="relative w-full h-full">
@@ -327,8 +326,16 @@ const Register = () => {
                         ×
                       </button>
                     </div>
+                  ) : cameraOn ? (
+                    <div className="relative w-full h-full">
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        className="w-full h-full object-cover rounded-lg border"
+                      ></video>
+                    </div>
                   ) : (
-                    <>
+                    <div onClick={handleUploadClick}>
                       <img
                         src="https://img.icons8.com/ios/50/000000/upload-to-cloud.png"
                         alt="Upload"
@@ -340,7 +347,7 @@ const Register = () => {
                         </span>{" "}
                         {t("photo_description")}
                       </p>
-                    </>
+                    </div>
                   )}
                 </div>
                 <input
@@ -354,25 +361,18 @@ const Register = () => {
                   <p className="text-red-500 text-sm">{errors.photo}</p>
                 )}
                 {cameraOn ? (
-                  <div className="flex flex-col gap-2 items-center">
-                    <video
-                      ref={videoRef}
-                      autoPlay
-                      className="w-full h-48 rounded-lg border"
-                    ></video>
-                    <button
-                      type="button"
-                      onClick={capturePhoto}
-                      className="bg-green-600 max-w-40 text-white px-4 py-2 rounded-lg"
-                    >
-                      {t("capture_photo")}
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={capturePhoto}
+                    className="bg-green-600 max-w-40 text-white px-4 py-2 rounded-lg mt-4"
+                  >
+                    {t("capture_photo")}
+                  </button>
                 ) : (
                   <button
                     type="button"
                     onClick={startCamera}
-                    className="bg-blue-600 max-w-40 text-white px-4 py-2 rounded-lg"
+                    className="bg-blue-600 max-w-40 text-white px-4 py-2 rounded-lg mt-4"
                   >
                     {t("capture_photo")}
                   </button>
@@ -466,7 +466,10 @@ const Register = () => {
           (status.state === "success" ? (
             <SuccessPopup setShowSuccessPopup={setShowSuccessPopup} />
           ) : status.state === "error" ? (
-            <ErrorPopup message={status.message} setShowSuccessPopup={setShowSuccessPopup} />
+            <ErrorPopup
+              message={status.message}
+              setShowSuccessPopup={setShowSuccessPopup}
+            />
           ) : status.state === "loading" ? (
             <PopupLoader />
           ) : null)}

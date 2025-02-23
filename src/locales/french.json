@@ -23,7 +23,7 @@
   "photo_description": " ou Capturer avec la caméra frontale PNG, JPG ou JPEG (taille maximale : 1 Mo)",
   "select": "Sélectionner une Option",
   "congrats": "Félicitations !",
-  "uin_message": " Votre Numéro d'Identification Unique (NUI) a été émis avec succès :",
+  "uin_message": " Votre Numéro d'Identification Unique (NUI) a été émis avec succès.",
   "further_details": " Veuillez vérifier votre e-mail pour plus de détails.",
   "okay": "D'accord",
   "err_fn": "Le Nom Complet est requis",
@@ -39,5 +39,6 @@
   "err_cnst": "Veuillez consentir pour continuer",
   "error": "Erreur",
   "SELF_ERR-001": "L'adresse e-mail est en double",
-  "SELF_ERR-002": "Échec de l'inscription.. réessayez."
+  "SELF_ERR-002": "Échec de l'inscription.. réessayez.",
+  "SELF_ERR-003": "Une erreur s'est produite. Veuillez réessayer !"
 }
