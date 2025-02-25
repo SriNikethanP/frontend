@@ -1,17 +1,19 @@
 import axios from "axios";
 
+
 export const register = async (userData, setStatus) => {
-  console.error("Sending request:", userData);
+  // console.error("Sending request:", userData);
 
   try {
     setStatus({ state: "loading", message: "" });
 
     const response = await axios.post(
-      "https://api-internal.mosipcon.mosip.net/v1/selfregistration/create",
+      "http://localhost:8080/selfregistration/create",
       userData,
       {
         headers: {
           "Content-Type": "application/json",
+          
         },
       }
     );

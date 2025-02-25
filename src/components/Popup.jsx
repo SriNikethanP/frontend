@@ -6,7 +6,7 @@ const SuccessPopup = ({ setShowSuccessPopup }) => {
   const { t } = useTranslation();
   return (
     <div className="fixed inset-0 bg-[#0B1E48] bg-opacity-90 flex items-center justify-center">
-      <div className="bg-white rounded-xl p-8 w-full max-w-md text-center border-green-600 border-t-4">
+      <div className="bg-white rounded-xl p-8 lg:px-6 w-full max-w-md text-center border-green-600 border-t-4">
         {/* Right Symbol (✓) */}
         <div className="flex justify-center items-center mb-4">
           <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
@@ -16,7 +16,7 @@ const SuccessPopup = ({ setShowSuccessPopup }) => {
           </div>
         </div>
 
-        <h2 className="text-2xl font-semibold mb-4">{t("congrats")}</h2>
+        <h2 className="text-3xl font-bold mt-6 mb-4">{t("congrats")}</h2>
         <p className="text-gray-600 mb-6 ">
           {t("uin_message")}
           {/* <span className="text-black-600 font-semibold"> {uin}</span> */}
@@ -37,7 +37,7 @@ const ErrorPopup = ({ setShowSuccessPopup, message }) => {
   const { t } = useTranslation();
   return (
     <div className="fixed inset-0 bg-[#0B1E48] bg-opacity-90 flex items-center justify-center">
-      <div className="bg-white rounded-xl p-8 w-full max-w-md text-center border-rose-600 border-t-4">
+      <div className="bg-white rounded-xl p-8 lg:px-6 w-full max-w-md text-center border-rose-600 border-t-4">
         {/* Cross Symbol (X) */}
         <div className="flex justify-center items-center mb-4">
           <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
@@ -47,7 +47,7 @@ const ErrorPopup = ({ setShowSuccessPopup, message }) => {
           </div>
         </div>
 
-        <h2 className="text-2xl font-semibold mb-4">{t("error")}</h2>
+        <h2 className="text-3xl font-bold mt-6 mb-4">{t("error")}</h2>
         <p className="text-gray-600 mb-6 ">
           {/* {t("err_msg")} */}
           {message === "SELF_ERR-001"

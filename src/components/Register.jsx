@@ -111,18 +111,49 @@ const Register = () => {
     }
 
     // Mobile number validation
+    // if (mobileNumber) {
+    //   if (!/^\d+$/.test(mobileNumber)) {
+    //     newErrors.mobileNumber = t("err_mn_n");
+    //   } else if (mobileNumber.length < 8 || mobileNumber.length > 15) {
+    //     newErrors.mobileNumber = t("err_mn_digits");
+    //   }
+    // }
     if (mobileNumber) {
-      if (!/^\d+$/.test(mobileNumber)) {
+      if (!/^[\d+\s]+$/.test(mobileNumber)) {
         newErrors.mobileNumber = t("err_mn_n");
-      } else if (mobileNumber.length < 8 || mobileNumber.length > 15) {
+      } else if (
+        mobileNumber.replace(/\s/g, "").length < 8 ||
+        mobileNumber.replace(/\s/g, "").length > 15
+      ) {
         newErrors.mobileNumber = t("err_mn_digits");
       }
     }
+
     // Date of Birth validation
     if (!dateOfBirth) {
-      newErrors.dateOfBirth = t("err_dob");
-    } else if (new Date(dateOfBirth) > new Date()) {
-      newErrors.dateOfBirth = t("err_dob_ftr");
+      newErrors.dateOfBirth = t("err_dob"); // Date is required
+    } else {
+      // Check for valid DD/MM/YYYY format
+      const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+      if (!dateRegex.test(dateOfBirth)) {
+        newErrors.dateOfBirth = t("err_dob_format"); // Invalid format
+      } else {
+        // Convert to valid Date object
+        const [day, month, year] = dateOfBirth.split("/").map(Number);
+        const parsedDate = new Date(year, month - 1, day);
+
+        // Check if date is valid (avoids 30/02 issue)
+        if (
+          parsedDate.getDate() !== day ||
+          parsedDate.getMonth() + 1 !== month ||
+          parsedDate.getFullYear() !== year
+        ) {
+          newErrors.dateOfBirth = t("err_dob_invalid"); // Invalid date
+        } else if (parsedDate > new Date()) {
+          newErrors.dateOfBirth = t("err_dob_ftr"); // Future date not allowed
+        }
+      }
     }
 
     if (!email.trim()) {
@@ -193,7 +224,7 @@ const Register = () => {
     const langs = {
       en: "eng",
       es: "spa",
-      fr: "fre",
+      fr: "fra",
       ar: "ara",
     };
     // Prepare the userData object
@@ -204,6 +235,7 @@ const Register = () => {
           value: fullName,
         },
       ],
+      preferredLang: langs[i18n.language],
       phone: `${mobileNumber}`,
       email: email,
       dateOfBirth: dateOfBirth,
@@ -227,10 +259,10 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-[#0B1E48] flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-lg w-full max-w-3xl p-8">
-        <h2 className="text-2xl font-semibold">{t("title")}</h2>
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-3xl p-8 lg:px-8">
+        <h2 className="text-3xl font-bold mb-2">{t("title")}</h2>
         <p className="text-gray-600 text-sm mb-6">{t("description")}</p>
-
+        <hr className="border-t border-gray-400 my-4" />
         <form className="">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -256,31 +288,32 @@ const Register = () => {
                   <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="date"
+                  type="text"
+                  placeholder="DD/MM/YYYY"
                   className="w-full border rounded p-2 mt-1"
                   value={dateOfBirth}
-                  max={new Date().toISOString().split("T")[0]} // Restrict future dates
                   onChange={(e) => setDateOfBirth(e.target.value)}
+                  maxLength={10} // Prevents input beyond DD/MM/YYYY
                 />
                 {errors.dateOfBirth && (
                   <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>
                 )}
               </div>
-
               <div className="mb-4">
                 <label className="block text-sm font-medium">
-                  {t("phone")}
-                </label>
-                <input
-                  type="text"
+                  {t("gender")}
+                </label>{" "}
+                {/* Removed * */}
+                <select
                   className="w-full border rounded p-2 mt-1"
-                  placeholder="Enter 8 to 15 digits"
-                  value={mobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value)}
-                />
-                {errors.mobileNumber && (
-                  <p className="text-red-500 text-sm">{errors.mobileNumber}</p>
-                )}
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option>{t("Select an Option")}</option>
+                  <option>{t("Male")}</option>
+                  <option>{t("Female")}</option>
+                  <option>{t("Other")}</option>
+                </select>
               </div>
 
               <div className="mb-4">
@@ -335,7 +368,10 @@ const Register = () => {
                       ></video>
                     </div>
                   ) : (
-                    <div onClick={handleUploadClick}>
+                    <div
+                      className="flex flex-col items-center"
+                      onClick={handleUploadClick}
+                    >
                       <img
                         src="https://img.icons8.com/ios/50/000000/upload-to-cloud.png"
                         alt="Upload"
@@ -345,7 +381,9 @@ const Register = () => {
                         <span className="text-blue-600 font-semibold">
                           {t("upload_photo")}
                         </span>{" "}
-                        {t("photo_description")}
+                        {t("or")} <br />
+                        {t("front_capture")} <br />
+                        {t("photo_format")}
                       </p>
                     </div>
                   )}
@@ -378,22 +416,20 @@ const Register = () => {
                   </button>
                 )}
               </div>
-
               <div className="mb-4">
                 <label className="block text-sm font-medium">
-                  {t("gender")}
-                </label>{" "}
-                {/* Removed * */}
-                <select
+                  {t("phone")}
+                </label>
+                <input
+                  type="text"
                   className="w-full border rounded p-2 mt-1"
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  <option>{t("select")}</option>
-                  <option>{t("male")}</option>
-                  <option>{t("female")}</option>
-                  <option>{t("other")}</option>
-                </select>
+                  placeholder="Enter Mobile Number Here"
+                  value={mobileNumber}
+                  onChange={(e) => setMobileNumber(e.target.value)}
+                />
+                {errors.mobileNumber && (
+                  <p className="text-red-500 text-sm">{errors.mobileNumber}</p>
+                )}
               </div>
             </div>
           </div>
@@ -409,36 +445,37 @@ const Register = () => {
             <input
               type="text"
               className="w-full border rounded p-2 mt-1"
-              // placeholder="Enter Address Here"
+              placeholder="Enter Address Here"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
           </div>
         </form>
 
-        <div className="mt-4 text-sm">
-          <p>{t("details")}</p>
+        <div className="mt-6 text-base ">
+          <p className="p-2">{t("details")}</p>
           <input
             type="checkbox"
-            className="mr-2"
+            className="mr-4 size-4"
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
           />
-          {t("consent")}
+          <p className="ml-2 text-sm">{t("consent")}</p>
+          <span className="text-red-500">*</span>
           {errors.consent && (
             <p className="text-red-500 text-sm">{errors.consent}</p>
           )}
         </div>
-
+        <hr className="border-t border-gray-400 my-4" />
         <div className="flex sm:flex-col md:justify-end md:flex-row mt-6 ">
           <button
-            className="border-2 px-4 py-2 rounded border-blue-300 text-blue-400 xl:mr-6 sm:mb-4 md:mb-0 "
+            className="border-2 px-4 py-2 mx-2 rounded border-blue-300 text-blue-400 xl:mr-6 sm:mb-4 md:mb-0 "
             onClick={handleClear}
           >
             {t("clear")}
           </button>
           <button
-            className={`bg-blue-600 text-white px-4 py-2 rounded ${
+            className={`bg-blue-600 text-white px-4 mx-2 py-2 rounded ${
               !(fullName && dateOfBirth && email && selectedImage && consent)
                 ? "opacity-50 cursor-not-allowed"
                 : ""
